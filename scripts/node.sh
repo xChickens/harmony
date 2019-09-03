@@ -180,7 +180,7 @@ pangaea)
     /ip4/54.86.126.90/tcp/9867/p2p/Qmdfjtk6hPoyrH1zVD9PEH4zfWLo38dP2mDvvKXfh3tnEv
     /ip4/52.40.84.2/tcp/9867/p2p/QmZJJx6AdaoEkGLrYG4JeLCKeCKDjnFz2wfHNHxAqFSGA9
   )
-  REL=master
+  REL=s3
   network_type=pangaea
   dns_zone=pga.hmny.io
   ;;
