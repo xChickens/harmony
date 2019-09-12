@@ -29,7 +29,6 @@ import (
 	common2 "github.com/harmony-one/harmony/internal/common"
 	nodeconfig "github.com/harmony-one/harmony/internal/configs/node"
 	"github.com/harmony-one/harmony/internal/ctxerror"
-	"github.com/harmony-one/harmony/internal/params"
 	"github.com/harmony-one/harmony/internal/shardchain"
 	"github.com/harmony-one/harmony/internal/utils"
 	"github.com/harmony-one/harmony/node"
@@ -491,7 +490,7 @@ func processImportCommnad() {
 	fmt.Printf("Private key imported for account: %s\n", common2.MustAddressToBech32(account.Address))
 }
 
-func showAllBalances(sender, receiver string, fromS, toS int) {
+func showAllBalances(sender, receiver string, fromS int) {
 	allAccounts := ks.Accounts()
 	for i, account := range allAccounts {
 		asBech32 := common2.MustAddressToBech32(account.Address)
@@ -507,8 +506,6 @@ func showAllBalances(sender, receiver string, fromS, toS int) {
 			if balanceNonce != nil {
 				if shardID == fromS && asBech32 == sender {
 					color.Yellow("    Balance in Shard %d:  %s, nonce: %v \n", shardID, convertBalanceIntoReadableFormat(balanceNonce.balance), balanceNonce.nonce)
-				} else if shardID == toS && asBech32 == receiver {
-					color.Cyan("    Balance in Shard %d:  %s, nonce: %v \n", shardID, convertBalanceIntoReadableFormat(balanceNonce.balance), balanceNonce.nonce)
 				} else {
 					fmt.Printf("    Balance in Shard %d:  %s, nonce: %v \n", shardID, convertBalanceIntoReadableFormat(balanceNonce.balance), balanceNonce.nonce)
 				}
@@ -527,7 +524,7 @@ func processBalancesCommand() {
 		return
 	}
 	if *balanceAddressPtr == "" {
-		showAllBalances("", "", -1, -1)
+		showAllBalances("", "", -1)
 	} else {
 		address := common2.ParseAddr(*balanceAddressPtr)
 		fmt.Printf("Account: %s:\n", common2.MustAddressToBech32(address))
@@ -938,8 +935,7 @@ func submitTransaction(tx *types.Transaction, walletNode *node.Node, shardID uin
 		sender := *transferSenderPtr
 		receiver := *transferReceiverPtr
 		shardID := *transferShardIDPtr
-		toShardID := *transferToShardIDPtr
-		showAllBalances(sender, receiver, shardID, toShardID)
+		showAllBalances(sender, receiver, shardID)
 	}
 
 	return nil
